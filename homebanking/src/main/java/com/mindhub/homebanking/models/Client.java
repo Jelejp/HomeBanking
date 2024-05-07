@@ -20,7 +20,7 @@ public class Client {
 
 //RELACION
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
 
 //CONSTRUCTORES
     public Client() {
@@ -70,7 +70,10 @@ public class Client {
         this.accounts = accounts;
     }
 
-    //METODOS PROPIOS
+//METODOS PROPIOS
+
+    //ESTABLECE LA RELACION ENTRE LA C Y EL C QUE SE INSTANCIA
+    //Y AGREGA LA C AL CONJUNTO DE C
     public void addAccount(Account account){
         account.setClient(this);
         accounts.add(account);

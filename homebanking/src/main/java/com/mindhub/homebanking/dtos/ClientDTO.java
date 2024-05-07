@@ -6,9 +6,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ClientDTO {
+//PROPIEDADES
     private Long id;
+
     private String firsName;
+
     private String email;
+
     private Set<AccountDTO> accounts;
 
 //CONSTRUCTOR CLIENT
@@ -17,7 +21,11 @@ public class ClientDTO {
         this.id = client.getId();
         this.firsName = client.getFirsName();
         this.email = client.getEmail();
-        this.accounts = client.getAccounts().stream().map(account -> new AccountDTO(account)).collect(Collectors.toSet());
+
+        this.accounts = client.getAccounts()
+                .stream()
+                .map(account -> new AccountDTO(account))
+                .collect(Collectors.toSet());
     }
 //GETTERS
 

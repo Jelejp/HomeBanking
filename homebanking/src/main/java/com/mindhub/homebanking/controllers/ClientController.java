@@ -27,12 +27,19 @@ public class ClientController {
     private ClientRepository clientRepository;
 
     @GetMapping("/")
-    //public List<Client> getAllClients(){
-        //return clientRepository.findAll();
-    public ResponseEntity<List<ClientDTO>> getAllClients(){
+    public ResponseEntity<?> getAllClients(){
         // DEVUELVE TODOS LOS CLIENTS
         List<Client> clients = clientRepository.findAll();
-        return new ResponseEntity<>(clients.stream().map(client -> new ClientDTO(client)).collect(java.util.stream.Collectors.toList()), HttpStatus.OK);
+
+        //SI NO HAY
+        if(clients.isEmpty()){
+            return new ResponseEntity<>("No customers found.", HttpStatus.NOT_FOUND);
+        }
+
+        //SI HAY
+        return new ResponseEntity<>(clients.stream()
+                .map(client -> new ClientDTO(client))
+                .collect(java.util.stream.Collectors.toList()), HttpStatus.OK);
     }
 
     //VARIABLE DE RUTA
@@ -48,5 +55,4 @@ public class ClientController {
         ClientDTO dtoClient = new ClientDTO(client);
         return new ResponseEntity<>(dtoClient, HttpStatus.OK);
     }
-
 }
