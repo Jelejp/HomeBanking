@@ -6,7 +6,10 @@ import java.util.List;
 
 @Entity
 public class ClientLoan {
+//PROPIEDADES
+    //PK
     @Id
+    //ID AUTOMATICAMENTE
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -14,15 +17,17 @@ public class ClientLoan {
 
     private Integer payments;
 
+    //RELACION
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
 
-
+    //RELACION
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
+//CONSTRUCTORES
     public ClientLoan() {
     }
 
@@ -33,6 +38,7 @@ public class ClientLoan {
         this.loan = loan;
     }
 
+//GETTERS Y SETTERS
     public long getId() {
         return id;
     }
@@ -69,4 +75,3 @@ public class ClientLoan {
         this.loan = loan;
     }
 }
-

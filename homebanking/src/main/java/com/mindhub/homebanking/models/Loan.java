@@ -20,10 +20,11 @@ public class Loan {
 
     private double maxAmount;
 
+    //CREA TABLA SEPARADA PARA ALMACENAR LA LISTA
     @ElementCollection
     private List<Integer> payments = new ArrayList<>();
 
-    //RELACION M a M CLIENT
+    //RELACION 1 a M CLIENTLOAN
     @OneToMany(mappedBy = "loan")
     private Set<ClientLoan> clientLoans = new HashSet<>();
 

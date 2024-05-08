@@ -18,7 +18,7 @@ public class Client {
     private String lastName;
     private String email;
 
-//RELACION 1 a M ACCOUNT
+    //RELACION 1 a M ACCOUNT
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
 
