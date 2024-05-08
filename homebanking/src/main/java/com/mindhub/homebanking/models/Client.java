@@ -22,7 +22,7 @@ public class Client {
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
 
-    //RELACION M a M LOAN
+    //RELACION 1 a M CLIENTLOAN
     @OneToMany(mappedBy = "client")
     private Set<ClientLoan> clientLoans = new HashSet<>();
 
