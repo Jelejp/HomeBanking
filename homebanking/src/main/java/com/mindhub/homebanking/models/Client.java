@@ -18,9 +18,13 @@ public class Client {
     private String lastName;
     private String email;
 
-//RELACION
+//RELACION 1 a M ACCOUNT
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
+
+    //RELACION M a M LOAN
+    @OneToMany(mappedBy = "client")
+    private Set<ClientLoan> clientLoans = new HashSet<>();
 
 //CONSTRUCTORES
     public Client() {
@@ -70,13 +74,22 @@ public class Client {
         this.accounts = accounts;
     }
 
-//METODOS PROPIOS
+    public Set<ClientLoan> getClientLoans() {
+        return clientLoans;
+    }
+
+    //METODOS PROPIOS
 
     //ESTABLECE LA RELACION ENTRE LA C Y EL C QUE SE INSTANCIA
     //Y AGREGA LA C AL CONJUNTO DE C
     public void addAccount(Account account){
         account.setClient(this);
         accounts.add(account);
+    }
+
+    public void addClientLoan(ClientLoan clientLoan) {
+        clientLoan.setClient(this);
+        clientLoans.add(clientLoan);
     }
 
     @Override
