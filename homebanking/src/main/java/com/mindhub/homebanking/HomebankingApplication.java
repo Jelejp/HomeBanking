@@ -59,16 +59,16 @@ public class HomebankingApplication {
 			Transaction transaction3_account2_client2 = new Transaction(TransactionType.DEBIT, -3050, "Purchase in butcher's ", date);
 
 			//CREO PRESTAMOS
-			Loan mortgageLoan = new Loan("Mortgage", 500.000, mortgageInstallments);
-			Loan personalLoan = new Loan("Personal", 100.000, personalInstallments);
-			Loan automotiveLoan = new Loan("Automotive", 300.000, automotiveInstallments);
+			Loan mortgageLoan = new Loan("Mortgage", 500000, mortgageInstallments);
+			Loan personalLoan = new Loan("Personal", 100000, personalInstallments);
+			Loan automotiveLoan = new Loan("Automotive", 300000, automotiveInstallments);
 
 			//CREO CLIENTLOAN
-			ClientLoan clientLoan1 = new ClientLoan(400.000, 60, client1, mortgageLoan);
-			ClientLoan clientLoan2 = new ClientLoan(50.000, 12, client1, personalLoan);
+			ClientLoan clientLoan1 = new ClientLoan(400000, 60);
+			ClientLoan clientLoan2 = new ClientLoan(50000, 12);
 
-			ClientLoan clientLoan3 = new ClientLoan(100.000, 24, client2, personalLoan);
-			ClientLoan clientLoan4 = new ClientLoan(200.000, 36, client2, automotiveLoan);
+			ClientLoan clientLoan3 = new ClientLoan(100000, 24);
+			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
 
 			//METODO ADDACCOUNT
 			client1.addAccount(account1_client1);
@@ -95,9 +95,16 @@ public class HomebankingApplication {
 
 			//METODO ADDCLIENTLOAN
 			client1.addClientLoan(clientLoan1);
+			mortgageLoan.addClientLoan(clientLoan1);
+
 			client1.addClientLoan(clientLoan2);
+			personalLoan.addClientLoan(clientLoan2);
+
 			client2.addClientLoan(clientLoan3);
+			personalLoan.addClientLoan(clientLoan3);
+
 			client2.addClientLoan(clientLoan4);
+			automotiveLoan.addClientLoan(clientLoan4);
 
 			//GUARDO CLIENT EN LA BASE DE DATOS
 			clientRepository.save(client1);
@@ -138,9 +145,14 @@ public class HomebankingApplication {
 			clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);
 
+
 			//IMPRIME POR CONSOLA CLIENT
-			System.out.println(client1);
-			System.out.println(client2);
+			/*System.out.println(client1);
+			System.out.println(client2);*/
+
+			System.out.println(client1.getLoans());
+			System.out.println(mortgageLoan.getClient());
 		};
+
 	}
 }

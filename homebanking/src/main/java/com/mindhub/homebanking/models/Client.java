@@ -3,7 +3,9 @@ package com.mindhub.homebanking.models;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Client {
@@ -92,6 +94,11 @@ public class Client {
         clientLoans.add(clientLoan);
     }
 
+    public List<Loan> getLoans(){
+        return clientLoans.stream()
+                .map(ClientLoan ::getLoan)
+                .collect(Collectors.toList());
+    }
     @Override
     public String toString() {
         return "Client{" +

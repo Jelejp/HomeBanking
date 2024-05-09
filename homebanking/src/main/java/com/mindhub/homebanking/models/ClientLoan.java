@@ -18,24 +18,20 @@ public class ClientLoan {
     private Integer payments;
 
     //RELACION
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id")
+    @ManyToOne
     private Client client;
 
     //RELACION
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "loan_id")
+    @ManyToOne
     private Loan loan;
 
 //CONSTRUCTORES
     public ClientLoan() {
     }
 
-    public ClientLoan(double amount, Integer payments, Client client, Loan loan) {
+    public ClientLoan(double amount, Integer payments) {
         this.amount = amount;
         this.payments = payments;
-        this.client = client;
-        this.loan = loan;
     }
 
 //GETTERS Y SETTERS
