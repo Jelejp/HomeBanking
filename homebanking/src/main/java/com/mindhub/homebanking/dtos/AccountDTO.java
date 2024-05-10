@@ -19,7 +19,6 @@ public class AccountDTO {
     private Set<TransactionDTO> transactions;
 
 //CONSTRUCTOR
-
     public AccountDTO(Account account){
         this.id = account.getId();
         this.number = account.getNumber();
@@ -31,6 +30,7 @@ public class AccountDTO {
                 .map(transaction -> new TransactionDTO(transaction))
                 .collect(Collectors.toSet());
     }
+
 //GETTERS
     public long getId() {
         return id;
