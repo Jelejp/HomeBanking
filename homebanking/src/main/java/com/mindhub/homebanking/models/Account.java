@@ -21,7 +21,7 @@ public class Account {
 
     private double balance ;
 
-//RELACION M a 1 CLIENT
+    //RELACION M a 1 CLIENT
     @ManyToOne(fetch =FetchType.EAGER)
     private Client client;
 
