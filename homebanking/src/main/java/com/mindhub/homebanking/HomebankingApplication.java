@@ -165,8 +165,8 @@ public class HomebankingApplication {
 
 //SOUNT
 			//IMPRIME POR CONSOLA CLIENT
-			/*System.out.println(client1);
-			System.out.println(client2);*/
+			System.out.println(client1);
+			System.out.println(client2);
 
 			System.out.println(client1.getLoans());
 			System.out.println(mortgageLoan.getClient());
