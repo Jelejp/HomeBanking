@@ -19,7 +19,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args  ) -> {
 			//CREO INSTANCIAS DE CLIENTS
 			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
@@ -28,6 +28,7 @@ public class HomebankingApplication {
 			LocalDate today = LocalDate.now();
 			LocalDate tomorrow = today.plusDays(1);
 			LocalDateTime date = LocalDateTime.now();
+			LocalDate expirationDate = today.plusYears(5);
 
 			//LISTAS DE PLAZOS
 			List<Integer> mortgageInstallments = List.of(12, 24, 36, 48, 60);
@@ -70,6 +71,12 @@ public class HomebankingApplication {
 			ClientLoan clientLoan3 = new ClientLoan(100000, 24);
 			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
 
+			//CREO CARD
+			Card card1 = new Card(client1, CardType.DEBIT, CardColor.GOLD, "5254-5011-6245-9531", 308, today, expirationDate);
+			Card card2 = new Card(client1, CardType.CREDIT, CardColor.TITANIUM, "5254-0262-9654-8536", 905, today, expirationDate);
+			Card card3 = new Card(client2, CardType.CREDIT, CardColor.SILVER, "5254-6200-1717-6210", 211, today, expirationDate);
+
+//METODOS
 			//METODO ADDACCOUNT
 			client1.addAccount(account1_client1);
 			client1.addAccount(account2_client1);
@@ -106,6 +113,12 @@ public class HomebankingApplication {
 			client2.addClientLoan(clientLoan4);
 			automotiveLoan.addClientLoan(clientLoan4);
 
+			//METODO ADDCARD
+			client1.addCard(card1);
+			client1.addCard(card2);
+			client2.addCard(card3);
+
+//REPOSITORIO
 			//GUARDO CLIENT EN LA BASE DE DATOS
 			clientRepository.save(client1);
 			clientRepository.save(client2);
@@ -145,7 +158,12 @@ public class HomebankingApplication {
 			clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);
 
+			//CARD
+			cardRepository.save(card1);
+			cardRepository.save(card2);
+			cardRepository.save(card3);
 
+//SOUNT
 			//IMPRIME POR CONSOLA CLIENT
 			/*System.out.println(client1);
 			System.out.println(client2);*/

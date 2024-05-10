@@ -28,6 +28,10 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private Set<ClientLoan> clientLoans = new HashSet<>();
 
+    //RELACION 1 a M CARD
+    @OneToMany(mappedBy = "client")
+    private Set<Card> cards = new HashSet<>();
+
 //CONSTRUCTORES
     public Client() {
     }
@@ -39,7 +43,6 @@ public class Client {
     }
 
 //GETTERS Y SETTERS
-
     public long getId() {
         return id;
     }
@@ -80,7 +83,11 @@ public class Client {
         return clientLoans;
     }
 
-    //METODOS PROPIOS
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+//METODOS PROPIOS
 
     //ESTABLECE LA RELACION ENTRE LA C Y EL C QUE SE INSTANCIA
     //Y AGREGA LA C AL CONJUNTO DE C
@@ -92,6 +99,11 @@ public class Client {
     public void addClientLoan(ClientLoan clientLoan) {
         clientLoan.setClient(this);
         clientLoans.add(clientLoan);
+    }
+
+    public void addCard(Card card){
+        card.setClient(this);
+        cards.add(card);
     }
 
     public List<Loan> getLoans(){
