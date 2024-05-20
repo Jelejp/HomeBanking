@@ -1,16 +1,12 @@
 package com.mindhub.homebanking.controllers;
 
-
 import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.models.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +22,7 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
+    @CrossOrigin(origins = "http://localhost:5173/")
     @GetMapping("/")
     public ResponseEntity<?> getAllClients(){
         // DEVUELVE TODOS LOS CLIENTS
@@ -43,6 +40,7 @@ public class ClientController {
     }
 
     //VARIABLE DE RUTA
+    @CrossOrigin(origins = "http://localhost:5173/")
     @GetMapping("/{id}")
     public ResponseEntity<?> getClientById(@PathVariable Long id){
         //BUSCAR CLIENT POR ID
