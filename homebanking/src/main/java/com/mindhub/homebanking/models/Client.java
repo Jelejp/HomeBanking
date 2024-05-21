@@ -17,8 +17,12 @@ public class Client {
     private long id;
 
     private String firsName;
+
     private String lastName;
+
     private String email;
+
+    public String password;
 
     //RELACION 1 a M ACCOUNT
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
@@ -36,11 +40,14 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firsName, String lastName, String email) {
+    public Client(String firsName, String lastName, String email, String password) {
         this.firsName = firsName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
+
+
 
 //GETTERS Y SETTERS
     public long getId() {
@@ -85,6 +92,14 @@ public class Client {
 
     public Set<Card> getCards() {
         return cards;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 //METODOS PROPIOS

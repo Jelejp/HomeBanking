@@ -2,10 +2,12 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class HomebankingApplication {
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
@@ -22,8 +26,8 @@ public class HomebankingApplication {
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args  ) -> {
 			//CREO INSTANCIAS DE CLIENTS
-			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
-			Client client2 = new Client("Juana", "Lopez", "juanalopez@gmail.com");
+			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("123"));
+			Client client2 = new Client("Juana", "Lopez", "juanalopez@gmail.com", passwordEncoder.encode("345"));
 
 			LocalDate today = LocalDate.now();
 			LocalDate tomorrow = today.plusDays(1);
@@ -72,9 +76,9 @@ public class HomebankingApplication {
 			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
 
 			//CREO CARD
-			Card card1 = new Card(client1, CardType.DEBIT, CardColor.GOLD, "5254-5011-6245-9531", 308, today, expirationDate);
-			Card card2 = new Card(client1, CardType.CREDIT, CardColor.TITANIUM, "5254-0262-9654-8536", 905, today, expirationDate);
-			Card card3 = new Card(client2, CardType.CREDIT, CardColor.SILVER, "5254-6200-1717-6210", 211, today, expirationDate);
+			Card card1 = new Card(client1, CardType.DEBIT, CardColor.GOLD, "5254-5011-6245-9531", 308, expirationDate, today);
+			Card card2 = new Card(client1, CardType.CREDIT, CardColor.TITANIUM, "5254-0262-9654-8536", 905, expirationDate, today);
+			Card card3 = new Card(client2, CardType.CREDIT, CardColor.SILVER, "5254-6200-1717-6210", 211, expirationDate, today);
 
 //METODOS
 			//METODO ADDACCOUNT

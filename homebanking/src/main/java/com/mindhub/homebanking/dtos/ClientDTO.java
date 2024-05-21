@@ -10,7 +10,7 @@ public class ClientDTO {
 //PROPIEDADES
     private long id;
 
-    private String firsName;
+    private String firstName;
 
     private String email;
 
@@ -23,7 +23,7 @@ public class ClientDTO {
 //CONSTRUCTOR
     public ClientDTO(Client client) {
         this.id = client.getId();
-        this.firsName = client.getFirsName();
+        this.firstName = client.getFirsName();
         this.email = client.getEmail();
 
         this.accounts = client.getAccounts()
@@ -48,7 +48,7 @@ public class ClientDTO {
     }
 
     public String getFirsName() {
-        return firsName;
+        return firstName;
     }
 
     public String getEmail() {
