@@ -59,10 +59,20 @@ public class AuthController {
         if (registerDTO.firstName().isBlank()){
             return new ResponseEntity<>("The name field must not be empty", HttpStatus.FORBIDDEN);
         }
+        if (registerDTO.lastName().isBlank()){
+            return new ResponseEntity<>("The last name field must not be empty", HttpStatus.FORBIDDEN);
+        }
+        if (registerDTO.password().isBlank()){
+            return new ResponseEntity<>("The password field must not be empty", HttpStatus.FORBIDDEN);
+        }
+        if (registerDTO.email().isBlank()){
+            return new ResponseEntity<>("The email field must not be empty", HttpStatus.FORBIDDEN);
+        }
 
         Client client = new Client(
                 registerDTO.firstName(),
-                registerDTO.lastName(), registerDTO.email(),
+                registerDTO.lastName(),
+                registerDTO.email(),
                 passwordEncoder.encode(registerDTO.password()));
         clientRepository.save(client);
         return new ResponseEntity<>("Client created", HttpStatus.CREATED);
