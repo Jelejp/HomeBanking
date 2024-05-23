@@ -16,13 +16,13 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String firsName;
+    private String firstName;
 
     private String lastName;
 
     private String email;
 
-    public String password;
+    private String password;
 
     //RELACION 1 a M ACCOUNT
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
@@ -40,8 +40,8 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firsName, String lastName, String email, String password) {
-        this.firsName = firsName;
+    public Client(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
@@ -54,12 +54,12 @@ public class Client {
         return id;
     }
 
-    public String getFirsName() {
-        return firsName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirsName(String firsName) {
-        this.firsName = firsName;
+    public void setFirstName(String firsName) {
+        this.firstName = firsName;
     }
 
     public String getLastName() {
@@ -130,7 +130,7 @@ public class Client {
     public String toString() {
         return "Client{" +
                 "id=" + id +
-                ", firsName='" + firsName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", accounts=" + accounts +

@@ -12,6 +12,8 @@ public class ClientDTO {
 
     private String firstName;
 
+    private String lastName;
+
     private String email;
 
     private Set<AccountDTO> accounts;
@@ -23,7 +25,8 @@ public class ClientDTO {
 //CONSTRUCTOR
     public ClientDTO(Client client) {
         this.id = client.getId();
-        this.firstName = client.getFirsName();
+        this.firstName = client.getFirstName();
+        this.lastName = client.getLastName();
         this.email = client.getEmail();
 
         this.accounts = client.getAccounts()
@@ -47,8 +50,12 @@ public class ClientDTO {
         return id;
     }
 
-    public String getFirsName() {
+    public String getFirstName() {
         return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getEmail() {

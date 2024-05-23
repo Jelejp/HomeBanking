@@ -14,10 +14,13 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtilService {
+    //CLAVE SECRETA PARA FIRMAR Y VERIFICAR EL TOKEN JWT
     private static final SecretKey SECRET_KEY =Jwts.SIG.HS256.key().build();
 
+    //TIEMPO DE EXPIRACION DEL TOKEN EN MILISEGUNDOS(DURA 1H)
     private static final long EXPIRATON_TOKEN = 1000 * 60 * 60;
 
+    //'EXTRAE TODOS LOS CLAIMS DEL TOKEN JWT
     public Claims extractAllClaims (String token){
         return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
     }
@@ -47,7 +50,7 @@ public class JwtUtilService {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATON_TOKEN))
                 .signWith(SECRET_KEY)
-                .compact(); //CONSTRUIMOS EL TOKEN JWT COMPLETO Y LO DEVOLVEMOS COMO UN STRING
+                .compact(); //CONSTRUYO EL TOKEN JWT COMPLETO Y LO DEVOLVEMOS COMO UN STRING
     }
 
     public String generateToken (UserDetails userDetails) {

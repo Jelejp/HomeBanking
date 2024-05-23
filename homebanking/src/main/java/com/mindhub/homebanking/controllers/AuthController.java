@@ -69,6 +69,10 @@ public class AuthController {
             return new ResponseEntity<>("The email field must not be empty", HttpStatus.FORBIDDEN);
         }
 
+        if (clientRepository.findByEmail(registerDTO.email()) != null) {
+            return new ResponseEntity<>("This email is already in use", HttpStatus.FORBIDDEN);
+        }
+
         Client client = new Client(
                 registerDTO.firstName(),
                 registerDTO.lastName(),
@@ -82,5 +86,11 @@ public class AuthController {
     public ResponseEntity<?> getClient (Authentication authentication) {
         Client client = clientRepository.findByEmail(authentication.getName());
         return ResponseEntity.ok(new ClientDTO(client));
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<?>test(Authentication authentication) {
+        String mail = authentication.getName();
+        return ResponseEntity.ok("Hello" + " " + mail);
     }
 }

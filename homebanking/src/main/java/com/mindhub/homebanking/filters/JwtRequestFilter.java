@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component //MARCA LA CLASE COMO UN COMPONENTE DE SPRING. ADMINISTRA COMO UN BEEN LO QUE ESTA ANOTANDO
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter { //clase abst para crear filtros person. para que el filtro se ejecute solo 1 vez por cd soli http
 
     @Autowired
     private UserDetailsService userDetailsService;
