@@ -16,19 +16,22 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+//PARA QUE SEA UNA CONFIGURACION Y QUE SEA PREVIO
 @Configuration
 public class WebConfig {
 
+    //INYECTO EL JWTREQUESTFILTER
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
+    //INYECTO EL CORSCONFIGURATIONSOURCE
     @Autowired
     private CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
+        httpSecurity //DEL HTTP SECURITY QUE RECIBO COMO PARAMETRO ESTABLEZCO LA CONFIGURACION DE CORS QUE HICE
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer :: disable)
                 .httpBasic(AbstractHttpConfigurer :: disable)
@@ -40,7 +43,7 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/api/auth/login", "/api/auth/register", "/h2-console/**").permitAll()
-
+                                .requestMatchers("/api/clients/", "/api/clients/{id}", "/api/accounts/", "/api/accounts/{id}").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
 

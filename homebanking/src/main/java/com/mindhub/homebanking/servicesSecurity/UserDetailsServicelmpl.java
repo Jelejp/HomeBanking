@@ -22,6 +22,7 @@ public class UserDetailsServicelmpl implements UserDetailsService {
         if (client == null){
             throw new UsernameNotFoundException(username);
         }
+
         return User
                 .withUsername(username)
                 .password(client.getPassword())

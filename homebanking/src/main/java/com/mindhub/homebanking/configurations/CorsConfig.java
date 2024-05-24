@@ -9,12 +9,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+//CROSS ORIGIN RESOURSE SHARING
+//COMPARTIR RECURSOS DE ORIGEN CRUZADOS
+//ES UNA CARACTERISTICA DE SEGURIDAD IMPLEMENTADA EN LOS NAVEGADORES WEB
+//PARA RESTRINGIR LAS PAGINAS WEB DE HACER SOLICITUDES
+//PERMITE A LOS SERVIDORES ESPECIFICAR QUE ORIGENES TIENEN PERMITIDO ACCEDER
+// A SUS RECURSOS A TRAVES DE ENCABEZADOS HTTP
 
 @Configuration
 public class CorsConfig {
 
+    //LO PONGO EN EL CONTEXTO DE SPRING Y QUE SEA UNA DE LAS PRIMERAS COSAS QUE SE EJECUTE
     @Bean
     public CorsConfigurationSource corsConfigurationSource () {
+        //CREO UNA INSTANCIA DE CORSCOFIGURATION PARA HACERLE MODIFICACIONES
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));

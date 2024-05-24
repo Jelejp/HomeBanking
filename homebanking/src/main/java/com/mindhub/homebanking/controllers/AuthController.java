@@ -29,7 +29,7 @@ public class AuthController {
     private ClientRepository clientRepository;
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -77,9 +77,9 @@ public class AuthController {
                 registerDTO.firstName(),
                 registerDTO.lastName(),
                 registerDTO.email(),
-                passwordEncoder.encode(registerDTO.password()));
+                passwordEncoder.encode(registerDTO.password())); //CODIFICA LA CONTRASEÑA
         clientRepository.save(client);
-        return new ResponseEntity<>("Client created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Client created", HttpStatus.CREATED); //DEVUELVE UN 201
     }
 
     @GetMapping("/current")

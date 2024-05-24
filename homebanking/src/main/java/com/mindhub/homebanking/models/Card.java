@@ -36,7 +36,7 @@ public class Card {
     }
 
     public Card(Client client, CardType type, CardColor color, String number, int cvv, LocalDate thruDate, LocalDate fromDate) {
-        this.cardholder = client.getFirsName() + " " + client.getLastName();
+        this.cardholder = client.getFirstName() + " " + client.getLastName();
         this.type = type;
         this.color = color;
         this.number = number;
