@@ -6,6 +6,7 @@ import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.servicesSecurity.AccountService;
 import com.mindhub.homebanking.servicesSecurity.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtilService jwtUtilService;
+
+    @Autowired
+    AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO) {
@@ -79,7 +83,13 @@ public class AuthController {
                 registerDTO.email(),
                 passwordEncoder.encode(registerDTO.password())); //CODIFICA LA CONTRASEÑA
         clientRepository.save(client);
-        return new ResponseEntity<>("Client created", HttpStatus.CREATED); //DEVUELVE UN 201
+        ResponseEntity<?> accountResponse = accountService.createAccount(client);
+
+        if (accountResponse.getStatusCode() != HttpStatus.CREATED) {
+            return new ResponseEntity<>("Client created, but account creation failed.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+        return new ResponseEntity<>("Client and account created", HttpStatus.CREATED); //DEVUELVE UN 201
     }
 
     @GetMapping("/current")
