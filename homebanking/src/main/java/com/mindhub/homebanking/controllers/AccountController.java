@@ -1,24 +1,24 @@
 package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
-import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.servicesSecurity.AccountService;
-import com.mindhub.homebanking.utils.RandomNumberUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api")
 public class AccountController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/")
+    @GetMapping("/accounts")
     public ResponseEntity<?>getAllAccounts(){
         List<Account> accounts = accountRepository.findAll();
 
@@ -42,7 +42,7 @@ public class AccountController {
     }
 
     //VARIABLE DE RUTA
-    @GetMapping("/{id}")
+    @GetMapping("/accounts/{id}")
     public ResponseEntity<?> getAccountById(@PathVariable Long id){
         //BUSCAR ACCOUNT POR ID
         Account account = accountRepository.findById(id).orElse(null);
@@ -58,12 +58,29 @@ public class AccountController {
     @Autowired
     ClientRepository clientRepository;
 
-
-    @PostMapping("/current/accounts")
+//CREAR ACCOUNT
+    @PostMapping("/clients/current/accounts")
     public ResponseEntity<?> createAccount (Authentication authentication) {
         Client client = clientRepository.findByEmail(authentication.getName());
 
         return accountService.createAccount(client);
 
+    }
+
+    @GetMapping("/clients/current/accounts")
+    public ResponseEntity<?> getAccountsOfCurrentClient(Authentication authentication) {
+        Client client = clientRepository.findByEmail(authentication.getName());
+
+        if (client == null) {
+            return new ResponseEntity<>("Client not fount", HttpStatus.NOT_FOUND);
+        }
+
+        Set<Account> accounts = client.getAccounts();
+
+        Set<AccountDTO> accountDTOS = accounts.stream()
+                .map(AccountDTO::new)
+                .collect(Collectors.toSet());
+
+        return new ResponseEntity<>(accountDTOS, HttpStatus.OK);
     }
 }
