@@ -40,11 +40,11 @@ public class HomebankingApplication {
 			List<Integer>automotiveInstallments = List.of(6, 12, 24);
 
 			//CREO INSTANCIAS DE ACCOUNTS
-			Account account1_client1 = new Account("VIN001", today, 5000);
-			Account account2_client1 = new Account("VIN002", tomorrow, 7500);
+			Account account1_client1 = new Account("VIN-001", today, 5000);
+			Account account2_client1 = new Account("VIN-002", tomorrow, 7500);
 
-			Account account1_client2 = new Account("VIN010", today, 5500);
-			Account account2_client2 = new Account("VIN011", tomorrow, 8000);
+			Account account1_client2 = new Account("VIN-010", today, 5500);
+			Account account2_client2 = new Account("VIN-011", tomorrow, 8000);
 
 			//CREO TRANSACTIONS
 			Transaction transaction1_account1_client1 = new Transaction(TransactionType.DEBIT, -2000, "Purchase in supermarket", date);
