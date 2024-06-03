@@ -1,8 +1,8 @@
 package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.ClientDTO;
-import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +14,19 @@ import java.util.List;
 @RequestMapping("/api/clients")
 public class ClientController {
 
+    @Autowired
+    private ClientService clientService;
+
     @GetMapping("/hello")
     public String getClients(){
         return "Hello Clients!";
     }
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @CrossOrigin(origins = "http://localhost:5173/")
     @GetMapping("/")
     public ResponseEntity<?> getAllClients(){
-        // DEVUELVE TODOS LOS CLIENTS
-        List<Client> clients = clientRepository.findAll();
+
+        //DEVUELVE TODOS LOS CLIENTS
+        List<ClientDTO> clients = clientService.getListClientsDTO();
 
         //SI NO HAY
         if(clients.isEmpty()){
@@ -34,23 +34,22 @@ public class ClientController {
         }
 
         //SI HAY
-        return new ResponseEntity<>(clients.stream()
-                .map(client -> new ClientDTO(client))
-                .collect(java.util.stream.Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
     //VARIABLE DE RUTA
-    @CrossOrigin(origins = "http://localhost:5173/")
     @GetMapping("/{id}")
     public ResponseEntity<?> getClientById(@PathVariable Long id){
+
         //BUSCAR CLIENT POR ID
-        Client client = clientRepository.findById(id).orElse(null);
+        Client client = clientService.getClientById(id);
+
         //SI NO EXISTE
         if (client == null){
             return new ResponseEntity<>("No customer with this id was found.", HttpStatus.NOT_FOUND);
         }
         //SI EXISTE
-        ClientDTO dtoClient = new ClientDTO(client);
+        ClientDTO dtoClient = clientService.getClientDTO(client);
         return new ResponseEntity<>(dtoClient, HttpStatus.OK);
     }
 }

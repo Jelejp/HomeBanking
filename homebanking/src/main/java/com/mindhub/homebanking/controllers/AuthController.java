@@ -6,6 +6,7 @@ import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.servicesSecurity.AccountService;
 import com.mindhub.homebanking.servicesSecurity.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -42,7 +43,7 @@ public class AuthController {
     private JwtUtilService jwtUtilService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO) {
@@ -73,7 +74,7 @@ public class AuthController {
             return new ResponseEntity<>("The email field must not be empty", HttpStatus.FORBIDDEN);
         }
 
-        if (clientRepository.findByEmail(registerDTO.email()) != null) {
+        if (clientService.getClientByEmail(registerDTO.email()) != null) {
             return new ResponseEntity<>("This email is already in use", HttpStatus.FORBIDDEN);
         }
 
@@ -82,7 +83,7 @@ public class AuthController {
                 registerDTO.lastName(),
                 registerDTO.email(),
                 passwordEncoder.encode(registerDTO.password())); //CODIFICA LA CONTRASEÑA
-        clientRepository.save(client);
+        clientService.saveClient(client);
         ResponseEntity<?> accountResponse = accountService.createAccount(client);
 
         if (accountResponse.getStatusCode() != HttpStatus.CREATED) {
@@ -94,7 +95,7 @@ public class AuthController {
 
     @GetMapping("/current")
     public ResponseEntity<?> getClient (Authentication authentication) {
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.getClientByEmail(authentication.getName());
         return ResponseEntity.ok(new ClientDTO(client));
     }
 
