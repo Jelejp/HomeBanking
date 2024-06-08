@@ -4,10 +4,10 @@ import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.dtos.LoginDTO;
 import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.Loan;
 import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
-import com.mindhub.homebanking.servicesSecurity.AccountService;
 import com.mindhub.homebanking.servicesSecurity.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class AuthController {
     private ClientService clientService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,9 +41,6 @@ public class AuthController {
 
     @Autowired
     private JwtUtilService jwtUtilService;
-
-    @Autowired
-    private AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO) {
@@ -58,7 +55,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<?> register (@RequestBody RegisterDTO registerDTO) {
 
         if (registerDTO.firstName().isBlank()){
@@ -82,7 +79,12 @@ public class AuthController {
                 registerDTO.firstName(),
                 registerDTO.lastName(),
                 registerDTO.email(),
-                passwordEncoder.encode(registerDTO.password())); //CODIFICA LA CONTRASEÑA
+                passwordEncoder.encode(registerDTO.password()));//CODIFICA LA CONTRASEÑA
+
+        if (registerDTO.email().contains("@admin")) {
+            client.createAdmin();
+        }
+
         clientService.saveClient(client);
         ResponseEntity<?> accountResponse = accountService.createAccount(client);
 

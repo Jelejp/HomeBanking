@@ -23,10 +23,17 @@ public class UserDetailsServicelmpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
+        String role;
+        if (client.isAdmin()){
+            role = "ADMIN";
+        } else {
+            role = "CLIENT";
+        }
+
         return User
                 .withUsername(username)
                 .password(client.getPassword())
-                .roles("CLIENT")
+                .roles(role)
                 .build();
     }
 }

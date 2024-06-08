@@ -24,6 +24,8 @@ public class Client {
 
     private String password;
 
+    private boolean isAdmin = false;
+
     //RELACION 1 a M ACCOUNT
     @OneToMany(mappedBy = "client", fetch =FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
@@ -102,7 +104,14 @@ public class Client {
         this.password = password;
     }
 
-//METODOS PROPIOS
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+    //METODOS PROPIOS
 
     //ESTABLECE LA RELACION ENTRE LA C Y EL C QUE SE INSTANCIA
     //Y AGREGA LA C AL CONJUNTO DE C
@@ -126,6 +135,11 @@ public class Client {
                 .map(ClientLoan ::getLoan)
                 .collect(Collectors.toList());
     }
+
+    public void createAdmin() {
+        isAdmin = true;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
