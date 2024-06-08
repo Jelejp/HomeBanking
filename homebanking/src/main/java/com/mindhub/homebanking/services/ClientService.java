@@ -17,5 +17,7 @@ public interface ClientService {
 
     Client getClientByEmail(String email);
 
+    Client findByEmail (String email);
+
     void saveClient(Client client);
 }

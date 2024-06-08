@@ -3,11 +3,11 @@ package com.mindhub.homebanking.services.implement;
 import com.mindhub.homebanking.dtos.LoanApDTO;
 import com.mindhub.homebanking.dtos.LoanApplicationDTO;
 import com.mindhub.homebanking.models.*;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.repositories.LoanRepository;
-import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.repositories.*;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.LoanService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +22,25 @@ import java.util.stream.Collectors;
 @Service
 public class LoanServiceImpl implements LoanService {
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     @Autowired
     private LoanRepository loanRepository;
 
+    @Autowired
+    private ClientLoanRepository clientLoanRepository;
+
+
     @Override
     @Transactional
     public ResponseEntity<String> applyForLoan(LoanApplicationDTO loanApplicationDTO, Authentication authentication) {
+
         Client client = getAuthenticatedClient(authentication.getName());
 
         ResponseEntity<String> validationResponse = validateLoanApplication(loanApplicationDTO);
@@ -53,13 +58,21 @@ public class LoanServiceImpl implements LoanService {
             return new ResponseEntity<>("Loan not found", HttpStatus.BAD_REQUEST);
         }
 
+        //CALCULO EL TOTAL DEL LOAN
         double totalAmount = calculateTotalAmount(loanApplicationDTO.amount(), loanApplicationDTO.installments());
+        //CREO LA TRANSACCION
         Transaction transaction = createLoanTransaction(destinationAccount, totalAmount,
                 "Loan approved" + " " + loan.getName(), LocalDateTime.now());
+        //CREO NUEVO CLIENTLOAN
+        ClientLoan clientLoan = new ClientLoan(totalAmount, loanApplicationDTO.installments());
+        clientLoan.setClient(client); //ASIGNO EL CLIENTE DEL LOAN
+        clientLoan.setLoan(loan); //ASIGNO EL LOAN
+        clientLoanRepository.save(clientLoan); //GUARDO EL CLIENTLOAN
 
         destinationAccount.addTransaction(transaction);
         updateAccountBalance(destinationAccount, totalAmount);
         saveTransaction(transaction);
+
 
         return new ResponseEntity<>("Loan application successful", HttpStatus.CREATED);
     }
@@ -95,7 +108,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         // Verificar que la cuenta de destino exista
-        if (!accountRepository.existsByNumber(loanApplicationDTO.destinationAccount())) {
+        if (!accountService.existsByNumber(loanApplicationDTO.destinationAccount())) {
             return new ResponseEntity<>("Destination account does not exist", HttpStatus.BAD_REQUEST);
         }
 
@@ -105,7 +118,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public Account getAccountByNumber(String accountNumber) {
-        return accountRepository.findByNumber(accountNumber);
+        return accountService.findByNumber(accountNumber);
     }
 
     @Override
@@ -136,17 +149,17 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public void saveTransaction(Transaction transaction) {
-        transactionRepository.save(transaction);
+        transactionService.saveTransaction(transaction);
     }
 
     @Override
     public void updateAccountBalance(Account account, double amount) {
         account.setBalance(account.getBalance() + amount);
-        accountRepository.save(account);
+        accountService.saveAccount(account);
     }
     @Override
     public Client getAuthenticatedClient(String email) {
-        return clientRepository.findByEmail(email);
+        return clientService.findByEmail(email);
     }
 
     @Override

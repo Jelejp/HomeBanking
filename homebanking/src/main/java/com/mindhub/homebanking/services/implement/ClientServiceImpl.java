@@ -42,4 +42,9 @@ public class ClientServiceImpl implements ClientService {
     public void saveClient(Client client) {
         clientRepository.save(client);
     }
+
+    @Override
+    public Client findByEmail(String email) {
+        return clientRepository.findByEmail(email);
+    }
 }

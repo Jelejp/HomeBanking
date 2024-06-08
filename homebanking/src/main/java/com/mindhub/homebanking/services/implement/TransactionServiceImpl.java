@@ -5,9 +5,9 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.models.TransactionType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +25,10 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Override
     @Transactional
@@ -59,7 +59,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Client getAuthenticatedClient(String email) {
-        return clientRepository.findByEmail(email);
+        return clientService.getClientByEmail(email);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Account getAccountByNumber(String accountNumber) {
-        return accountRepository.findByNumber(accountNumber);
+        return accountService.findByNumber(accountNumber);
     }
 
     @Override
@@ -98,20 +98,28 @@ public class TransactionServiceImpl implements TransactionService {
         saveTransactions(transactionDebit, transactionCredit);
     }
 
+    @Override
     public void updateAccountBalances(Account sourceAccount, Account destinationAccount, double amount) {
         sourceAccount.setBalance(sourceAccount.getBalance() - amount);
         destinationAccount.setBalance(destinationAccount.getBalance() + amount);
 
-        accountRepository.save(sourceAccount);
-        accountRepository.save(destinationAccount);
+        accountService.saveAccount(sourceAccount);
+        accountService.saveAccount(destinationAccount);
     }
 
+    @Override
     public Transaction createTransaction(Account account, double amount, String description, TransactionType type, LocalDateTime date) {
         return new Transaction(type, amount, description, date);
     }
 
+    @Override
     public void saveTransactions(Transaction transactionDebit, Transaction transactionCredit) {
         transactionRepository.save(transactionDebit);
         transactionRepository.save(transactionCredit);
+    }
+
+    @Override
+    public void saveTransaction(Transaction transaction) {
+        transactionRepository.save(transaction);
     }
 }
