@@ -26,8 +26,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-#
-homebanking/src/main/resources/application.properties
+
 
 
 ### NetBeans ###
