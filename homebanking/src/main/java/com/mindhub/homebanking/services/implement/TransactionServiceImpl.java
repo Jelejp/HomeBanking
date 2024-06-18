@@ -96,6 +96,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         updateAccountBalances(sourceAccount, destinationAccount, amount);
         saveTransactions(transactionDebit, transactionCredit);
+        // Asociar las transacciones con las cuentas
+        sourceAccount.addTransaction(transactionDebit);
+        destinationAccount.addTransaction(transactionCredit);
     }
 
     @Override
@@ -118,6 +121,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transactionCredit);
     }
 
+    //Para loan service
     @Override
     public void saveTransaction(Transaction transaction) {
         transactionRepository.save(transaction);

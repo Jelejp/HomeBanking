@@ -27,5 +27,6 @@ public interface TransactionService {
     Transaction createTransaction(Account account, double amount, String description, TransactionType type, LocalDateTime date);
 
     void saveTransactions(Transaction transactionDebit, Transaction transactionCredit);
+
     void saveTransaction(Transaction transaction);
 }

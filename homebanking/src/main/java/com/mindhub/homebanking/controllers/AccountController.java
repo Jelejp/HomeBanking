@@ -25,6 +25,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+
     @GetMapping("/accounts")
     public ResponseEntity<?>getAllAccounts(){
         List<Account> accounts = accountService.getAllAccounts();
@@ -70,5 +71,25 @@ public class AccountController {
         Set<AccountDTO > accountDTOS = accountService.getAccountsOfCurrentClient(client);
 
         return new ResponseEntity<>(accountDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/clients/current/accounts/{id}")
+    public ResponseEntity<?> getCurrentAccountById(@PathVariable Long id, Authentication authentication) {
+        // Obtener el cliente autenticado
+        Client client = accountService.getAuthenticatedClient(authentication.getName());
+        if (client == null) {
+            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+        }
+        // Obtener la cuenta por ID
+        Account account = accountService.getAccountById(id);
+        if (account == null) {
+            return new ResponseEntity<>("No account with this id was found.", HttpStatus.NOT_FOUND);
+        }
+        // Verifica si la cuenta pertenece al cliente autenticado
+        if (!client.getAccounts().contains(account)) {
+            return new ResponseEntity<>("You do not have access to this account.", HttpStatus.FORBIDDEN);
+        }
+        AccountDTO accountDTO = new AccountDTO(account);
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 }

@@ -21,7 +21,6 @@ public class ClientController {
     public String getClients(){
         return "Hello Clients!";
     }
-
     @GetMapping("/")
     public ResponseEntity<?> getAllClients(){
 
@@ -36,6 +35,7 @@ public class ClientController {
         //SI HAY
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
+
 
     //VARIABLE DE RUTA
     @GetMapping("/{id}")
