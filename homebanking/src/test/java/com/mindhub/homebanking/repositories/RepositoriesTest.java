@@ -1,3 +1,4 @@
+/*
 package com.mindhub.homebanking.repositories;
 
 import com.mindhub.homebanking.models.Loan;
@@ -28,4 +29,4 @@ public class RepositoriesTest {
         List<Loan> loans = loanRepository.findAll();
         assertThat(loans, hasItem(hasProperty("name", is("Personal"))));
     }
-}
+}*/

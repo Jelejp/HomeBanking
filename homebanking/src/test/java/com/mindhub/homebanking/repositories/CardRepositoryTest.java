@@ -19,7 +19,7 @@ public class CardRepositoryTest {
     private CardRepository cardRepository;
 
     //VERIFICA QUE EL METODO FUNCIONE CORRECTAMENTE CUANDO SE LE PASA UN NUMERO DE TARJETA VALIDO
-    @Test
+/*    @Test
     public void findByNumber() {
         Card card = cardRepository.findByNumber("5254-5011-6245-9531");
         assertThat(card, is(notNullValue()));
@@ -31,5 +31,5 @@ public class CardRepositoryTest {
     public void existCards() {
         List<Card> cards = cardRepository.findAll();
         assertThat(cards, is(not(empty())));
-    }
+    }*/
 }

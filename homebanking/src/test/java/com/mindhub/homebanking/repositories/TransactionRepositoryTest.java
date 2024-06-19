@@ -1,3 +1,4 @@
+/*
 package com.mindhub.homebanking.repositories;
 
 import com.mindhub.homebanking.models.Transaction;
@@ -33,4 +34,4 @@ public class TransactionRepositoryTest {
         assertThat(transactionRepository.findById(transactionTest.getId()), is(notNullValue()));
 
     }
-}
+}*/

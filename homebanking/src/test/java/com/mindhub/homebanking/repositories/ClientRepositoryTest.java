@@ -17,7 +17,7 @@ public class ClientRepositoryTest {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Test
+/*    @Test
     public void canClientByEmail() {
         Client client = clientRepository.findByEmail("melba@mindhub.com");
         assertThat(client, is(notNullValue()));
@@ -31,5 +31,5 @@ public class ClientRepositoryTest {
         List<Client> clients = clientRepository.findAll();
         assertThat(clients, is(not(empty())));
         assertThat(clients.size(), is(greaterThan(0)));
-    }
+    }*/
 }

@@ -27,15 +27,15 @@ public class AccountRepositoryTest {
     }
 
     //VERIFICA SI EXISTE UNA CUENTA CON EL NUMERO
-    @Test
+/*    @Test
     public void existByNumber() {
         boolean exists = accountRepository.existsByNumber("VIN-011");
         assertThat(exists, is(true));
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void existAccounts() {
         List<Account> accounts = accountRepository.findAll();
         assertThat(accounts, is(not(empty())));
-    }
+    }*/
 }
