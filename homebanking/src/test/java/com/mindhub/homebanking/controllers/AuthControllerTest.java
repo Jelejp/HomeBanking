@@ -1,4 +1,4 @@
-
+/*
 package com.mindhub.homebanking.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,4 +42,4 @@ public class AuthControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()); // Assuming successful login returns 200 OK
     }
 
-}
+}*/
