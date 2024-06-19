@@ -24,7 +24,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource () {
         //CREO UNA INSTANCIA DE CORSCOFIGURATION PARA HACERLE MODIFICACIONES
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173"));
+        configuration.setAllowedOrigins(Arrays.asList("https://homebanking-front-ttiy.onrender.com", "http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
